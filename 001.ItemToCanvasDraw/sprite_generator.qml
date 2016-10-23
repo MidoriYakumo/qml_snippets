@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 
 Window {
 	id: window
-	title: "ItemToCanvasDraw"
+	title: "Sprite Generator"
 	visible: true
 	width: Math.max(800, recorder.width+16+sprite.width)
 	height: Math.max(600, recorder.height+16)

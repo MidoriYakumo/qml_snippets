@@ -1,6 +1,3 @@
-/*
-  grabToImage requires Window to be shown
-*/
 
 import QtQuick 2.7
 import QtQuick.Window 2.2
