@@ -21,7 +21,7 @@ Window {
 		id: canvas
 		anchors.fill: parent
 
-		property var paintFunc: canvas.randomDraw
+		property var paintFunc: item.showWheel?traceWheel:randomDraw
 
 		onPaint: {
 			if (!item.texture)
@@ -37,6 +37,12 @@ Window {
 		function randomDraw(ctx){
 			var x = Math.random()*(width-item.width)
 			var y = Math.random()*(height-item.height)
+			ctx.drawImage(item.texture.url, x, y)
+		}
+
+		function traceWheel(ctx){
+			var x = wheel.deg * (width+item.width)/360-item.width
+			var y = (height-item.height)/2
 			ctx.drawImage(item.texture.url, x, y)
 		}
 	}
@@ -58,8 +64,10 @@ Window {
 			height: width
 
 			property var texture: null
+			property bool showWheel: false
 
 			Column {
+				visible: !parent.showWheel
 				anchors.centerIn: parent
 
 				Text {
@@ -79,6 +87,49 @@ Window {
 
 				BusyIndicator {
 					running: true
+				}
+			}
+
+			Rectangle {
+				id: wheel
+				visible: parent.showWheel
+				width: Math.min(parent.width, parent.height)
+				height: width
+				radius: width
+
+				property real deg: 360
+
+				color: Qt.rgba(1-(deg<120?deg:360-deg)/120, 1-Math.abs(deg-120)/120, 1-Math.abs(deg-240)/120, .04)
+				rotation: deg
+
+				Rectangle {
+					y: parent.height/2-height/2
+					width: 24
+					height: width
+					radius: width
+					border.color: "#40000000"
+					border.width: 1
+
+					Text {
+						anchors.centerIn: parent
+						text: parent.parent.deg.toFixed(0)
+					}
+				}
+
+				onDegChanged: {
+					if (visible) {
+						window.draw()
+					}
+				}
+
+				NumberAnimation {
+					loops: Animation.Infinite
+					running: true
+					target: wheel
+					property: "deg"
+					from: 0
+					to: 360
+					duration: 5000
 				}
 			}
 		}
@@ -108,8 +159,16 @@ Window {
 		Button {
 			text: "draw"
 			onClicked: {
+				item.showWheel = false
 				text.text = Math.random()
 				window.draw()
+			}
+		}
+
+		Button {
+			text: "roll"
+			onClicked: {
+				item.showWheel = true
 			}
 		}
 	}
