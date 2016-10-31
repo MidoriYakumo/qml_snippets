@@ -5,6 +5,6 @@ This project demostrates how to send input event, including MouseEvent and KeyEv
 
 To be noticed that on some platform some of the events should be sent asynchronously so a timer/defer is required to perform event sending action.
 
-A virtualkey control created with this idea can be found in: [qmlvirtualkey](https://github.com/MidoriYakumo/qmlvirtualkey)
+A virtualkey control created with this idea can be found in: [qml-virtualkey](https://github.com/MidoriYakumo/qml-virtualkey)
 
 ![](./main.0.png)
